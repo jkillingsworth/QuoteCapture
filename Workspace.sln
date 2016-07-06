@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "QuoteCapture", "src\QuoteCapture\QuoteCapture.fsproj", "{337E0DC9-9B5C-4764-BA0D-B70495BCB0F2}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "QuoteCapture.Oanda", "src\QuoteCapture.Oanda\QuoteCapture.Oanda.fsproj", "{EAA12687-8AB6-4576-B703-5F3059FB5230}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "QuoteCapture.Yahoo", "src\QuoteCapture.Yahoo\QuoteCapture.Yahoo.fsproj", "{66824254-7086-4E51-AC9E-62FA3A72AF01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{337E0DC9-9B5C-4764-BA0D-B70495BCB0F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{337E0DC9-9B5C-4764-BA0D-B70495BCB0F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{337E0DC9-9B5C-4764-BA0D-B70495BCB0F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{337E0DC9-9B5C-4764-BA0D-B70495BCB0F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAA12687-8AB6-4576-B703-5F3059FB5230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAA12687-8AB6-4576-B703-5F3059FB5230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAA12687-8AB6-4576-B703-5F3059FB5230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAA12687-8AB6-4576-B703-5F3059FB5230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66824254-7086-4E51-AC9E-62FA3A72AF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66824254-7086-4E51-AC9E-62FA3A72AF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66824254-7086-4E51-AC9E-62FA3A72AF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66824254-7086-4E51-AC9E-62FA3A72AF01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
