@@ -9,7 +9,7 @@ open OpenQA.Selenium
 type Client() =
 
     let driver = new Firefox.FirefoxDriver()
-    let timeout = System.TimeSpan.FromSeconds(30.0)
+    let timeout = TimeSpan.FromSeconds(30.0)
 
     interface IDisposable with
         member this.Dispose() =
