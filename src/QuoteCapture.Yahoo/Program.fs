@@ -1,11 +1,10 @@
 ﻿module Program
 
-open QuoteCapture
+open QuoteCapture.Yahoo
 
 //-------------------------------------------------------------------------------------------------
 
 [<EntryPoint>]
 let main argv =
-    use client = new Browser.Client()
-    client.Navigate("https://finance.yahoo.com/q")
+    use client = new QuoteClient.Client()
     0

@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Types.fs" />
+    <Compile Include="QuoteClient.fs" />
+    <Compile Include="InterestRateClient.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

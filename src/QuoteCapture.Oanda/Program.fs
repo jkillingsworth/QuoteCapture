@@ -1,11 +1,10 @@
 ﻿module Program
 
-open QuoteCapture
+open QuoteCapture.Oanda
 
 //-------------------------------------------------------------------------------------------------
 
 [<EntryPoint>]
 let main argv =
-    use client = new Browser.Client()
-    client.Navigate("https://www.oanda.com/currency/converter/")
+    use client = new QuoteClient.Client()
     0
