@@ -60,6 +60,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Content Include="packages.config" />
+    <Compile Include="Logging.fs" />
     <Compile Include="Browser.fs" />
   </ItemGroup>
   <ItemGroup>
