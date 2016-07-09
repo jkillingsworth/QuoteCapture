@@ -14,12 +14,12 @@ let private url = "https://www.oanda.com/currency/converter/"
 type Client() =
 
     let client = new Browser.Client()
-    do client.Navigate(url)
+    do
+        client.Navigate(url)
 
-    interface IDisposable with
-        member this.Dispose() =
-            let disposable = client :> IDisposable
-            disposable.Dispose()
+    interface IDisposable with member this.Dispose() = (client :> IDisposable).Dispose()
+
+    //---------------------------------------------------------------------------------------------
 
     member this.GetData(pair : Pair, dateStart : DateTime, dateFinal : DateTime) =
         ()
