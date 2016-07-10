@@ -67,6 +67,8 @@
     <Content Include="packages.config" />
     <Compile Include="Types.fs" />
     <Compile Include="Data.fs" />
+    <Compile Include="Format.fs" />
+    <Compile Include="QuoteParser.fs" />
     <Compile Include="QuoteClient.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
