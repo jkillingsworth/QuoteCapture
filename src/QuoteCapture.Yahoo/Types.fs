@@ -12,8 +12,8 @@ type Divid =
     { Amount  : decimal }
 
 type Split =
-    { New     : decimal
-      Old     : decimal }
+    { New     : int
+      Old     : int }
 
 type Quote =
     { Issue   : Issue
@@ -22,5 +22,6 @@ type Quote =
       Hi      : decimal
       Lo      : decimal
       Close   : decimal
+      Volume  : int64
       Divid   : Divid option
       Split   : Split option }

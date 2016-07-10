@@ -18,10 +18,10 @@ type Quote =
       Date       : DateTime
       MedBid     : decimal
       MedAsk     : decimal
-      MinBid     : decimal
-      MinAsk     : decimal
-      MaxBid     : decimal
-      MaxAsk     : decimal }
+      MinBid     : decimal option
+      MinAsk     : decimal option
+      MaxBid     : decimal option
+      MaxAsk     : decimal option }
 
 type InterestRate =
     { Currency   : Currency
