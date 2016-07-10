@@ -60,6 +60,14 @@ type Client() =
 
     //---------------------------------------------------------------------------------------------
 
+    member this.PageSource
+        with get () = driver.PageSource
+
+    member this.Url
+        with get () = driver.Url
+
+    //---------------------------------------------------------------------------------------------
+
     member this.Navigate(url : string) =
 
         Log.Debug("Navigating to URL.")
