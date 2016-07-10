@@ -22,6 +22,9 @@ type Element(element : IWebElement) =
     member this.IsSelected
         with get () = element.Selected
 
+    member this.Href
+        with get () = element.GetAttribute("href")
+
     //---------------------------------------------------------------------------------------------
 
     member this.SendKeys(text : string) =
