@@ -1,6 +1,7 @@
 ﻿module QuoteCapture.Browser
 
 open System
+open System.Threading
 open OpenQA.Selenium
 open OpenQA.Selenium.Support.UI
 open QuoteCapture.Logging
@@ -54,6 +55,7 @@ type Element(element : IWebElement) =
 type Client() =
 
     let driver = new Firefox.FirefoxDriver()
+    let random = new Random()
     let timeout = TimeSpan.FromSeconds(30.0)
 
     interface IDisposable with member this.Dispose() = driver.Dispose()
@@ -70,22 +72,26 @@ type Client() =
 
     member this.Navigate(url : string) =
 
+        this.Delay()
         Log.Debug("Navigating to URL.")
         Log.Extra(url)
         driver.Navigate().GoToUrl(url)
 
     member this.GoForward() =
 
+        this.Delay()
         Log.Debug("Going forward.")
         driver.Navigate().Forward()
 
     member this.GoBack() =
 
+        this.Delay()
         Log.Debug("Going back.")
         driver.Navigate().Back()
 
     member this.Refresh() =
 
+        this.Delay()
         Log.Debug("Refreshing page.")
         driver.Navigate().Refresh()
 
@@ -101,6 +107,7 @@ type Client() =
 
     member this.FindElements(xpath : string) =
 
+        this.Delay()
         Log.Debug("Finding elements.")
         Log.Extra(xpath)
         driver.FindElements(By.XPath(xpath))
@@ -109,6 +116,7 @@ type Client() =
 
     member this.FindElement(xpath : string) =
 
+        this.Delay()
         Log.Debug("Finding element.")
         Log.Extra(xpath)
         driver.FindElement(By.XPath(xpath))
@@ -124,3 +132,11 @@ type Client() =
         let readyState = readyState :?> string
         Log.Debug("Document ready state: {0}", readyState)
         readyState = "complete"
+
+    //---------------------------------------------------------------------------------------------
+
+    member private this.Delay() =
+
+        let delay = random.Next(100, 1000)
+        Log.Debug("Delaying for {0} milliseconds.", delay)
+        Thread.Sleep(delay)
