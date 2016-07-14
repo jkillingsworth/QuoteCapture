@@ -32,6 +32,28 @@ type Client() =
 
     member this.GetData(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
 
+        this.NavigateToHistoricalQuotes(issue, dateStart, dateFinal)
+
+        let generator = function
+            | false -> None
+            | _ ->
+                let pageSource = client.PageSource
+                let hasNextPage = QuoteParser.hasNextPage pageSource
+                if (hasNextPage = true) then this.NavigateToNextPage()
+                Some (pageSource, hasNextPage)
+
+        true
+        |> Array.unfold generator
+        |> Array.map (QuoteParser.parseQuotes issue)
+        |> Array.collect id
+        |> Array.filter (fun quote -> quote.Date >= dateStart)
+        |> Array.filter (fun quote -> quote.Date <= dateFinal)
+        |> this.Normalize
+
+    //---------------------------------------------------------------------------------------------
+
+    member private this.Normalize(quotes : Quote[]) =
+
         let normalize ratio quote =
 
             let recalculateVolume volume = int64 ((decimal volume) / ratio)
@@ -51,31 +73,9 @@ type Client() =
 
             (quote, ratio)
 
-        this.GetQuotes(issue, dateStart, dateFinal)
-        |> Array.filter (fun quote -> quote.Date >= dateStart)
-        |> Array.filter (fun quote -> quote.Date <= dateFinal)
+        quotes
         |> Array.mapFold normalize 1m |> fst
         |> Array.rev
-
-    //---------------------------------------------------------------------------------------------
-
-    member private this.GetQuotes(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
-
-        this.NavigateToHistoricalQuotes(issue, dateStart, dateFinal)
-
-        let generator = function
-            | false -> None
-            | _ ->
-                let pageSource = client.PageSource
-                let hasNextPage = QuoteParser.hasNextPage pageSource
-                if (hasNextPage = true) then this.NavigateToNextPage()
-                Some (pageSource, hasNextPage)
-
-        true
-        |> Seq.unfold generator
-        |> Seq.map (QuoteParser.parseQuotes issue)
-        |> Seq.collect id
-        |> Seq.toArray
 
     //---------------------------------------------------------------------------------------------
 
