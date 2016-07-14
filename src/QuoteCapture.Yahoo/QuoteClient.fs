@@ -63,20 +63,16 @@ type Client() =
 
         this.NavigateToHistoricalQuotes(issue, dateStart, dateFinal)
 
-        let rec loop = function
-            | acc, false -> acc
-            | acc, true
-                ->
+        let generator = function
+            | false -> None
+            | _ ->
                 let pageSource = client.PageSource
-                let acc = pageSource :: acc
-                if (QuoteParser.hasNextPage pageSource) then
-                    this.NavigateToNextPage()
-                    loop (acc, true)
-                else
-                    loop (acc, false)
+                let hasNextPage = QuoteParser.hasNextPage pageSource
+                if (hasNextPage = true) then this.NavigateToNextPage()
+                Some (pageSource, hasNextPage)
 
-        loop ([], true)
-        |> Seq.rev
+        true
+        |> Seq.unfold generator
         |> Seq.map (QuoteParser.parseQuotes issue)
         |> Seq.collect id
         |> Seq.toArray
