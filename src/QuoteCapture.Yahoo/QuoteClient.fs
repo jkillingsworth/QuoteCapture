@@ -21,6 +21,50 @@ let private xpathNext       = "//a[@rel='next']"
 
 //-------------------------------------------------------------------------------------------------
 
+let private constructUrl issue (dateStart : DateTime) (dateFinal : DateTime) =
+
+    let parameters =
+        [ String.Format(paramTicker, issue.Ticker)
+          String.Format(paramDateStartY, dateStart.Year)
+          String.Format(paramDateStartM, dateStart.Month - 1)
+          String.Format(paramDateStartD, dateStart.Day)
+          String.Format(paramDateFinalY, dateFinal.Year)
+          String.Format(paramDateFinalM, dateFinal.Month - 1)
+          String.Format(paramDateFinalD, dateFinal.Day)
+          String.Format(paramBypass) ]
+
+    parameters
+    |> Seq.reduce (fun acc param -> acc + "&" + param)
+    |> (+) "?"
+    |> (+) url
+
+let private appendBypassFlag url =
+
+    url + "&" + paramBypass
+
+//-------------------------------------------------------------------------------------------------
+
+let private normalize ratio quote =
+
+    let recalculateVolume volume = int64 ((decimal volume) / ratio)
+    let recalculateAmount amount = amount * ratio
+    let adjustDividAmount divid = { divid with Amount = recalculateAmount divid.Amount }
+
+    let divid = quote.Divid |> Option.map adjustDividAmount
+    let quote = { quote with Divid = divid }
+    let quote = { quote with Volume = recalculateVolume quote.Volume }
+
+    let ratio =
+        match quote.Split with
+        | None
+            -> ratio
+        | Some split
+            -> ratio * (decimal split.New / decimal split.Old)
+
+    (quote, ratio)
+
+//-------------------------------------------------------------------------------------------------
+
 [<Sealed>]
 type Client() =
 
@@ -48,32 +92,6 @@ type Client() =
         |> Array.collect id
         |> Array.filter (fun quote -> quote.Date >= dateStart)
         |> Array.filter (fun quote -> quote.Date <= dateFinal)
-        |> this.Normalize
-
-    //---------------------------------------------------------------------------------------------
-
-    member private this.Normalize(quotes : Quote[]) =
-
-        let normalize ratio quote =
-
-            let recalculateVolume volume = int64 ((decimal volume) / ratio)
-            let recalculateAmount amount = amount * ratio
-            let adjustDividAmount divid = { divid with Amount = recalculateAmount divid.Amount }
-
-            let divid = quote.Divid |> Option.map adjustDividAmount
-            let quote = { quote with Divid = divid }
-            let quote = { quote with Volume = recalculateVolume quote.Volume }
-
-            let ratio =
-                match quote.Split with
-                | None
-                    -> ratio
-                | Some split
-                    -> ratio * (decimal split.New / decimal split.Old)
-
-            (quote, ratio)
-
-        quotes
         |> Array.mapFold normalize 1m |> fst
         |> Array.rev
 
@@ -83,7 +101,7 @@ type Client() =
 
         Log.Debug("Navigating to historical quotes: {0}", issue)
         let ticker = issue.Ticker |> Format.Ticker.toYahoo
-        let url = this.ConstructUrl(issue, dateStart, dateFinal)
+        let url = constructUrl issue dateStart dateFinal
         client.Navigate(url)
 
         Log.Debug("Waiting for page load.")
@@ -93,28 +111,8 @@ type Client() =
 
         Log.Debug("Navigating to next page.")
         let elementNext = client.FindElement(xpathNext)
-        let url = elementNext.Href
-        let url = url + "&" + paramBypass
+        let url = elementNext.Href |> appendBypassFlag
         client.Navigate(url)
 
         Log.Debug("Waiting for page load.")
         client.WaitForPageLoad()
-
-    //---------------------------------------------------------------------------------------------
-
-    member private this.ConstructUrl(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
-
-        let parameters =
-            [ String.Format(paramTicker, issue.Ticker)
-              String.Format(paramDateStartY, dateStart.Year)
-              String.Format(paramDateStartM, dateStart.Month - 1)
-              String.Format(paramDateStartD, dateStart.Day)
-              String.Format(paramDateFinalY, dateFinal.Year)
-              String.Format(paramDateFinalM, dateFinal.Month - 1)
-              String.Format(paramDateFinalD, dateFinal.Day)
-              String.Format(paramBypass) ]
-
-        parameters
-        |> Seq.reduce (fun acc param -> acc + "&" + param)
-        |> (+) "?"
-        |> (+) url
