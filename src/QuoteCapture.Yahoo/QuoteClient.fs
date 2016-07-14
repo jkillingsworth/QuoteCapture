@@ -7,17 +7,17 @@ open QuoteCapture.Yahoo.Types
 
 //-------------------------------------------------------------------------------------------------
 
-let private url = "https://finance.yahoo.com/q"
+let private url = "http://finance.yahoo.com/q/hp"
 
-let private xpathTicker           = "//*[@id='txtQuotes']"
-let private xpathHistoricalPrices = "//a[.='Historical Prices']"
-let private xpathDateM            = "//*[@id='sel{0}']/option[.='{1:MMM}']"
-let private xpathDateY            = "//*[@id='{0}year']"
-let private xpathDateD            = "//*[@id='{0}day']"
-let private xpathGetPrices        = "//*[@value='Get Prices']"
-let private xpathNext             = "//a[@rel='next']"
-let private keyDateStart          = "start"
-let private keyDateFinal          = "end"
+let private paramBypass     = "bypass=true"
+let private paramTicker     = "s={0}"
+let private paramDateStartY = "c={0:D4}"
+let private paramDateStartM = "a={0:D2}"
+let private paramDateStartD = "b={0:D1}"
+let private paramDateFinalY = "f={0:D4}"
+let private paramDateFinalM = "d={0:D2}"
+let private paramDateFinalD = "e={0:D1}"
+let private xpathNext       = "//a[@rel='next']"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -25,8 +25,6 @@ let private keyDateFinal          = "end"
 type Client() =
 
     let client = new Browser.Client()
-    do
-        client.Navigate(url)
 
     interface IDisposable with member this.Dispose() = (client :> IDisposable).Dispose()
 
@@ -63,65 +61,34 @@ type Client() =
 
     member private this.GetQuotes(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
 
-        this.NavigateToHistoricalQuoteLookup(issue)
+        this.NavigateToHistoricalQuotes(issue, dateStart, dateFinal)
 
-        let quotes = client.PageSource |> QuoteParser.parseQuotes issue
-        let dates = quotes |> Array.map (fun quote -> quote.Date)
+        let rec loop = function
+            | acc, false -> acc
+            | acc, true
+                ->
+                let pageSource = client.PageSource
+                let acc = pageSource :: acc
+                if (QuoteParser.hasNextPage pageSource) then
+                    this.NavigateToNextPage()
+                    loop (acc, true)
+                else
+                    loop (acc, false)
 
-        let hasDateStart = dates |> Array.contains dateStart
-        let hasDateFinal = dates |> Array.contains dateFinal
-
-        if (hasDateStart && hasDateFinal) then
-            quotes
-        else
-            this.EnterDateStart(dateStart)
-            this.EnterDateFinal(dateFinal)
-
-            Log.Debug("Navigating to data points.")
-            let elementGetQuotes = client.FindElement(xpathGetPrices)
-            elementGetQuotes.Click()
-
-            Log.Debug("Waiting for page load.")
-            client.WaitForPageLoad()
-
-            let rec loop = function
-                | acc, false -> acc
-                | acc, true
-                    ->
-                    let pageSource = client.PageSource
-                    let acc = pageSource :: acc
-                    if (QuoteParser.hasNextPage pageSource) then
-                        this.NavigateToNextPage()
-                        loop (acc, true)
-                    else
-                        loop (acc, false)
-
-            loop ([], true)
-            |> Seq.map (QuoteParser.parseQuotes issue)
-            |> Seq.collect id
-            |> Seq.toArray
+        loop ([], true)
+        |> Seq.rev
+        |> Seq.map (QuoteParser.parseQuotes issue)
+        |> Seq.collect id
+        |> Seq.toArray
 
     //---------------------------------------------------------------------------------------------
 
-    member private this.NavigateToHistoricalQuoteLookup(issue : Issue) =
+    member private this.NavigateToHistoricalQuotes(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
 
-        Log.Debug("Navigating to historical quote lookup form: {0}", issue)
-
+        Log.Debug("Navigating to historical quotes: {0}", issue)
         let ticker = issue.Ticker |> Format.Ticker.toYahoo
-
-        Log.Debug("Entering ticker symbol: {0}", ticker)
-        let elementTicker = client.FindElement(xpathTicker)
-        elementTicker.Click()
-        elementTicker.Clear()
-        elementTicker.SendKeys(ticker)
-        elementTicker.PressEnter()
-
-        Log.Debug("Waiting for page load.")
-        client.WaitForPageLoad()
-
-        Log.Debug("Clicking the historical prices link.")
-        let elementHistoricalPrices = client.FindElement(xpathHistoricalPrices)
-        elementHistoricalPrices.Click()
+        let url = this.ConstructUrl(issue, dateStart, dateFinal)
+        client.Navigate(url)
 
         Log.Debug("Waiting for page load.")
         client.WaitForPageLoad()
@@ -130,31 +97,28 @@ type Client() =
 
         Log.Debug("Navigating to next page.")
         let elementNext = client.FindElement(xpathNext)
-        elementNext.Click()
+        let url = elementNext.Href
+        let url = url + "&" + paramBypass
+        client.Navigate(url)
 
         Log.Debug("Waiting for page load.")
         client.WaitForPageLoad()
 
     //---------------------------------------------------------------------------------------------
 
-    member private this.EnterDateStart(date : DateTime) =
+    member private this.ConstructUrl(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
 
-        Log.Debug("Entering date (start): {0:d}", date)
-        this.EnterDate(date, keyDateStart)
+        let parameters =
+            [ String.Format(paramTicker, issue.Ticker)
+              String.Format(paramDateStartY, dateStart.Year)
+              String.Format(paramDateStartM, dateStart.Month - 1)
+              String.Format(paramDateStartD, dateStart.Day)
+              String.Format(paramDateFinalY, dateFinal.Year)
+              String.Format(paramDateFinalM, dateFinal.Month - 1)
+              String.Format(paramDateFinalD, dateFinal.Day)
+              String.Format(paramBypass) ]
 
-    member private this.EnterDateFinal(date : DateTime) =
-
-        Log.Debug("Entering date (final): {0:d}", date)
-        this.EnterDate(date, keyDateFinal)
-
-    member private this.EnterDate(date : DateTime, key : string) =
-
-        let elementM = client.FindElement(String.Format(xpathDateM, key, date))
-        let elementY = client.FindElement(String.Format(xpathDateY, key))
-        let elementD = client.FindElement(String.Format(xpathDateD, key))
-
-        elementM.Click()
-        elementY.Clear()
-        elementY.SendKeys(date.Year.ToString())
-        elementD.Clear()
-        elementD.SendKeys(date.Day.ToString())
+        parameters
+        |> Seq.reduce (fun acc param -> acc + "&" + param)
+        |> (+) "?"
+        |> (+) url
