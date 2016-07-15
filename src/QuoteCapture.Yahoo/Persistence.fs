@@ -52,3 +52,27 @@ module private SelectIssueByTicker =
 
 let selectIssueByTicker =
     SelectIssueByTicker.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private SelectIssuesActive =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Yahoo\SelectIssuesActive.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let private ofRecord (record : CommandProvider.Record) : Issue =
+
+      { IssueId = record.IssueId
+        Ticker  = record.Ticker }
+
+    let execute () =
+        use command = new CommandProvider()
+        let records = command.Execute()
+        records
+        |> Seq.map ofRecord
+        |> Seq.toArray
+
+let selectIssuesActive =
+    SelectIssuesActive.execute

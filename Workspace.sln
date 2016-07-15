@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Yahoo", "Yahoo", "{C61CB335
 	ProjectSection(SolutionItems) = preProject
 		sql\Yahoo\SelectHolidays.sql = sql\Yahoo\SelectHolidays.sql
 		sql\Yahoo\SelectIssueByTicker.sql = sql\Yahoo\SelectIssueByTicker.sql
+		sql\Yahoo\SelectIssuesActive.sql = sql\Yahoo\SelectIssuesActive.sql
 	EndProjectSection
 EndProject
 Global
