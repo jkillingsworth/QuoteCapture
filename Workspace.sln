@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oanda", "Oanda", "{84EF2709
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Yahoo", "Yahoo", "{C61CB335-88AB-4CEE-8C05-30816B670F3D}"
 	ProjectSection(SolutionItems) = preProject
-		sql\Yahoo\Issue.SelectByTicker.sql = sql\Yahoo\Issue.SelectByTicker.sql
+		sql\Yahoo\SelectIssueByTicker.sql = sql\Yahoo\SelectIssueByTicker.sql
 	EndProjectSection
 EndProject
 Global
