@@ -13,6 +13,24 @@ let private configFile = @"..\..\private\Yahoo\App.config"
 
 //-------------------------------------------------------------------------------------------------
 
+module private SelectHolidays =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Yahoo\SelectHolidays.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let execute () =
+        use command = new CommandProvider()
+        let records = command.Execute()
+        records
+        |> Seq.toArray
+
+let selectHolidays =
+    SelectHolidays.execute
+
+//-------------------------------------------------------------------------------------------------
+
 module private SelectIssueByTicker =
 
     [<Literal>]
