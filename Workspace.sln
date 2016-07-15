@@ -13,8 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{92A7A953-11B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oanda", "Oanda", "{84EF2709-0EC0-4CB3-93D1-B9F46DDBCB58}"
 	ProjectSection(SolutionItems) = preProject
-		sql\Oanda\Currency.SelectByName.sql = sql\Oanda\Currency.SelectByName.sql
-		sql\Oanda\Pair.SelectByCurrencyNames.sql = sql\Oanda\Pair.SelectByCurrencyNames.sql
+		sql\Oanda\SelectCurrencyByName.sql = sql\Oanda\SelectCurrencyByName.sql
+		sql\Oanda\SelectPairByCurrencyNames.sql = sql\Oanda\SelectPairByCurrencyNames.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Yahoo", "Yahoo", "{C61CB335-88AB-4CEE-8C05-30816B670F3D}"
