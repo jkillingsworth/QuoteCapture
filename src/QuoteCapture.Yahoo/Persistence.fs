@@ -76,3 +76,25 @@ module private SelectIssuesActive =
 
 let selectIssuesActive =
     SelectIssuesActive.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private SelectQuoteLatestDate =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Yahoo\SelectQuoteLatestDate.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let execute issue =
+        use command = new CommandProvider()
+        let records = command.Execute(issue.IssueId)
+        if (records |> Seq.isEmpty) then
+            None
+        else
+            records
+            |> Seq.exactlyOne
+            |> Some
+
+let selectQuoteLatestDate =
+    SelectQuoteLatestDate.execute
