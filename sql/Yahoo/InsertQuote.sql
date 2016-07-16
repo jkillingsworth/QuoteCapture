@@ -1,0 +1,20 @@
+﻿insert into [Quote]
+(
+    [IssueId],
+    [Date],
+    [Open],
+    [Hi],
+    [Lo],
+    [Close],
+    [Volume]
+)
+values
+(
+    @issueId,
+    @date,
+    @open,
+    @hi,
+    @lo,
+    @close,
+    @volume
+)

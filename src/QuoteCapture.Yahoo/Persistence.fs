@@ -98,3 +98,54 @@ module private SelectQuoteLatestDate =
 
 let selectQuoteLatestDate =
     SelectQuoteLatestDate.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private InsertQuote =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Yahoo\InsertQuote.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let execute quote =
+        let command = new CommandProvider()
+        command.Execute(quote.Issue.IssueId, quote.Date, quote.Open, quote.Hi, quote.Lo, quote.Close, quote.Volume)
+        |> ignore
+
+let insertQuote =
+    InsertQuote.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private InsertDivid =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Yahoo\InsertDivid.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let execute quote divid =
+        let command = new CommandProvider()
+        command.Execute(quote.Issue.IssueId, quote.Date, divid.Amount)
+        |> ignore
+
+let insertDivid =
+    InsertDivid.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private InsertSplit =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Yahoo\InsertSplit.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let execute quote split =
+        let command = new CommandProvider()
+        command.Execute(quote.Issue.IssueId, quote.Date, split.New, split.Old)
+        |> ignore
+
+let insertSplit =
+    InsertSplit.execute
