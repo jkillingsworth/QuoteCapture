@@ -1,5 +1,6 @@
 ﻿module QuoteCapture.Yahoo.Persistence
 
+open System.Transactions
 open FSharp.Data
 open QuoteCapture.Yahoo.Types
 
@@ -149,3 +150,12 @@ module private InsertSplit =
 
 let insertSplit =
     InsertSplit.execute
+
+//-------------------------------------------------------------------------------------------------
+
+let transaction (action : Lazy<'T>) =
+
+    use scope = new TransactionScope()
+    let value = action.Force()
+    scope.Complete()
+    value
