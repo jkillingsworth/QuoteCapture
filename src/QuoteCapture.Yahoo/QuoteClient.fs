@@ -100,7 +100,7 @@ type Client() =
     member private this.NavigateToHistoricalQuotes(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
 
         Log.Debug("Navigating to historical quotes: {0}", issue)
-        let ticker = issue.Ticker |> Format.Ticker.toYahoo
+        let ticker = issue.Ticker |> Ticker.toYahoo
         let url = constructUrl issue dateStart dateFinal
         client.Navigate(url)
 

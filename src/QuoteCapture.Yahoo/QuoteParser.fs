@@ -160,7 +160,7 @@ let private validateMatchSuccess (match' : Match) =
 
 let private validateTicker issue (match' : Match) =
 
-    let tickerMatch = match'.Groups.[matchTicker].Value |> Format.Ticker.ofYahoo
+    let tickerMatch = match'.Groups.[matchTicker].Value |> Ticker.ofYahoo
     let tickerValid = issue.Ticker
     if (tickerMatch <> tickerValid) then
         failwith "Incorrect ticker."
