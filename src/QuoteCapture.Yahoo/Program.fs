@@ -27,6 +27,12 @@ let main = function
         Update.updateAll date
         0
 
+    | [| "issueId"; input |]
+        ->
+        let issueId = Ticker.computeIssueId input
+        printfn "%i" issueId
+        0
+
     | argv
         ->
         failwith "Invalid parameters."
