@@ -69,6 +69,7 @@
     <Compile Include="Persistence.fs" />
     <Compile Include="QuoteParser.fs" />
     <Compile Include="QuoteClient.fs" />
+    <Compile Include="InterestRateParser.fs" />
     <Compile Include="InterestRateClient.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
