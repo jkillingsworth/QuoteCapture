@@ -67,3 +67,36 @@ module private SelectPairByCurrencyNames =
 
 let selectPairByCurrencyNames =
     SelectPairByCurrencyNames.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private SelectPairsActive =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Oanda\SelectPairsActive.sql"
+
+    type private CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let private ofRecord (record : CommandProvider.Record) : Pair =
+
+        let currencyBase =
+            { CurrencyId = record.BaseCurrencyId
+              Name       = record.BaseName }
+
+        let currencyQuot =
+            { CurrencyId = record.QuotCurrencyId
+              Name       = record.QuotName }
+
+        { PairId = record.PairId
+          Base   = currencyBase
+          Quot   = currencyQuot }
+
+    let execute () =
+        use command = new CommandProvider()
+        let records = command.Execute()
+        records
+        |> Seq.map ofRecord
+        |> Seq.toArray
+
+let selectPairsActive =
+    SelectPairsActive.execute
