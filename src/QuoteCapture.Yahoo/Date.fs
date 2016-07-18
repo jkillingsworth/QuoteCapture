@@ -4,13 +4,13 @@ open System
 
 //-------------------------------------------------------------------------------------------------
 
-let private timeZoneEst = "Eastern Standard Time"
 let private minimumDate = DateTime(1960, 01, 01)
-let private holidays = Persistence.selectHolidays ()
+let private addDays days (date : DateTime) = date.AddDays(float days)
 
 //-------------------------------------------------------------------------------------------------
 
-let private addDays days (date : DateTime) = date.AddDays(float days)
+let private holidays = Persistence.selectHolidays ()
+
 let private isWeekendSat (date : DateTime) = date.DayOfWeek = DayOfWeek.Saturday
 let private isWeekendSun (date : DateTime) = date.DayOfWeek = DayOfWeek.Sunday
 
@@ -31,6 +31,7 @@ let getMinimumDate () = minimumDate
 
 let getMaximumDate () =
 
+    let timeZoneEst = "Eastern Standard Time"
     let hour08PmEst = 20
 
     let dateTime = DateTime.Now
