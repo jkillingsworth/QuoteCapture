@@ -100,3 +100,25 @@ module private SelectPairsActive =
 
 let selectPairsActive =
     SelectPairsActive.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private SelectQuoteLatestDate =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Oanda\SelectQuoteLatestDate.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let execute pair =
+        use command = new CommandProvider()
+        let records = command.Execute(pair.PairId)
+        if (records |> Seq.isEmpty) then
+            None
+        else
+            records
+            |> Seq.exactlyOne
+            |> Some
+
+let selectQuoteLatestDate =
+    SelectQuoteLatestDate.execute

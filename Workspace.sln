@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oanda", "Oanda", "{84EF2709
 		sql\Oanda\SelectCurrencyByName.sql = sql\Oanda\SelectCurrencyByName.sql
 		sql\Oanda\SelectPairByCurrencyNames.sql = sql\Oanda\SelectPairByCurrencyNames.sql
 		sql\Oanda\SelectPairsActive.sql = sql\Oanda\SelectPairsActive.sql
+		sql\Oanda\SelectQuoteLatestDate.sql = sql\Oanda\SelectQuoteLatestDate.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Yahoo", "Yahoo", "{C61CB335-88AB-4CEE-8C05-30816B670F3D}"
