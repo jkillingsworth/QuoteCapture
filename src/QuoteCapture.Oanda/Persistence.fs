@@ -122,3 +122,33 @@ module private SelectQuoteLatestDate =
 
 let selectQuoteLatestDate =
     SelectQuoteLatestDate.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private SelectInterestRates =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Oanda\SelectInterestRates.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+
+    let private ofRecord (record : CommandProvider.Record) : InterestRate =
+
+        let currency =
+            { CurrencyId = record.CurrencyId
+              Name       = record.Name }
+
+        { Currency = currency
+          DateTime = record.DateTime
+          Bid      = record.Bid
+          Ask      = record.Ask }
+
+    let execute () =
+        use command = new CommandProvider()
+        let records = command.Execute()
+        records
+        |> Seq.map ofRecord
+        |> Seq.toArray
+
+let selectInterestRates =
+    SelectInterestRates.execute

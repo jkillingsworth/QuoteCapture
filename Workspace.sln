@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oanda", "Oanda", "{84EF2709-0EC0-4CB3-93D1-B9F46DDBCB58}"
 	ProjectSection(SolutionItems) = preProject
 		sql\Oanda\SelectCurrencyByName.sql = sql\Oanda\SelectCurrencyByName.sql
+		sql\Oanda\SelectInterestRates.sql = sql\Oanda\SelectInterestRates.sql
 		sql\Oanda\SelectPairByCurrencyNames.sql = sql\Oanda\SelectPairByCurrencyNames.sql
 		sql\Oanda\SelectPairsActive.sql = sql\Oanda\SelectPairsActive.sql
 		sql\Oanda\SelectQuoteLatestDate.sql = sql\Oanda\SelectQuoteLatestDate.sql
