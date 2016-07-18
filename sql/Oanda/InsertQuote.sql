@@ -1,0 +1,22 @@
+﻿insert into [Quote]
+(
+    [PairId],
+    [Date],
+    [MedBid],
+    [MedAsk],
+    [MinBid],
+    [MinAsk],
+    [MaxBid],
+    [MaxAsk]
+)
+values
+(
+    @pairId,
+    @date,
+    @medBid,
+    @medAsk,
+    @minBid,
+    @minAsk,
+    @maxBid,
+    @maxAsk
+)

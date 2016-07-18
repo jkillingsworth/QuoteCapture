@@ -152,3 +152,20 @@ module private SelectInterestRates =
 
 let selectInterestRates =
     SelectInterestRates.execute
+
+//-------------------------------------------------------------------------------------------------
+
+module private InsertQuote =
+
+    [<Literal>]
+    let private sql = @"..\..\sql\Oanda\InsertQuote.sql"
+
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile, AllParametersOptional = true>
+
+    let execute quote =
+        let command = new CommandProvider()
+        command.Execute(Some quote.Pair.PairId, Some quote.Date, Some quote.MedBid, Some quote.MedAsk, quote.MinBid, quote.MinAsk, quote.MaxBid, quote.MaxAsk)
+        |> ignore
+
+let insertQuote =
+    InsertQuote.execute
