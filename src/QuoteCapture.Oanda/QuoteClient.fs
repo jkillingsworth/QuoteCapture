@@ -10,13 +10,14 @@ open QuoteCapture.Oanda.Types
 
 let private url = "https://www.oanda.com/currency/converter/"
 
-let private prefixBase     = "quote"
-let private prefixQuot     = "base"
 let private xpathCodeField = "//*[@id='{0}_currency_input']";
 let private xpathCodeValue = "//*[@id='{0}_currency_list_container']//span[.='{1}']";
 let private xpathTrackBase = "//*[@id='scroll-track-bot-1']";
 let private xpathTrackQuot = "//*[@id='scroll-track-bot-2']";
 let private xpathDateInput = "//*[@id='end_date_input']";
+
+let private prefixBase = "quote"
+let private prefixQuot = "base"
 
 //-------------------------------------------------------------------------------------------------
 

@@ -33,17 +33,18 @@ let private patternQuote
 
 //-------------------------------------------------------------------------------------------------
 
-let private matchMedBid     = "medBid"
-let private matchMedAsk     = "medAsk"
-let private matchMinBid     = "minBid"
-let private matchMinAsk     = "minAsk"
-let private matchMaxBid     = "maxBid"
-let private matchMaxAsk     = "maxAsk"
-let private matchDateY      = "dateY"
-let private matchDateM      = "dateM"
-let private matchDateD      = "dateD"
-let private matchBase       = "base"
-let private matchQuot       = "quot"
+let private matchMedBid = "medBid"
+let private matchMedAsk = "medAsk"
+let private matchMinBid = "minBid"
+let private matchMinAsk = "minAsk"
+let private matchMaxBid = "maxBid"
+let private matchMaxAsk = "maxAsk"
+let private matchDateY  = "dateY"
+let private matchDateM  = "dateM"
+let private matchDateD  = "dateD"
+let private matchBase   = "base"
+let private matchQuot   = "quot"
+
 let private emptyQuoteValue = "-"
 
 //-------------------------------------------------------------------------------------------------

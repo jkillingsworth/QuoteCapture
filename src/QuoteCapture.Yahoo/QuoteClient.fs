@@ -3,21 +3,24 @@
 open System
 open QuoteCapture
 open QuoteCapture.Logging
+open QuoteCapture.Browser
 open QuoteCapture.Yahoo.Types
 
 //-------------------------------------------------------------------------------------------------
 
 let private url = "http://finance.yahoo.com/q/hp"
 
-let private paramBypass     = "bypass=true"
-let private paramTicker     = "s={0}"
-let private paramDateStartY = "c={0:D4}"
-let private paramDateStartM = "a={0:D2}"
-let private paramDateStartD = "b={0:D1}"
-let private paramDateFinalY = "f={0:D4}"
-let private paramDateFinalM = "d={0:D2}"
-let private paramDateFinalD = "e={0:D1}"
-let private xpathNext       = "//a[@rel='next']"
+let private xpathNext = "//a[@rel='next']"
+let private xpathPrev = "//a[@rel='prev']"
+
+let private paramBypass = "bypass=true"
+let private paramTicker = "s={0}"
+let private paramStartY = "c={0:D4}"
+let private paramStartM = "a={0:D2}"
+let private paramStartD = "b={0:D1}"
+let private paramFinalY = "f={0:D4}"
+let private paramFinalM = "d={0:D2}"
+let private paramFinalD = "e={0:D1}"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -25,12 +28,12 @@ let private constructUrl issue (dateStart : DateTime) (dateFinal : DateTime) =
 
     let parameters =
         [ String.Format(paramTicker, issue.Ticker)
-          String.Format(paramDateStartY, dateStart.Year)
-          String.Format(paramDateStartM, dateStart.Month - 1)
-          String.Format(paramDateStartD, dateStart.Day)
-          String.Format(paramDateFinalY, dateFinal.Year)
-          String.Format(paramDateFinalM, dateFinal.Month - 1)
-          String.Format(paramDateFinalD, dateFinal.Day)
+          String.Format(paramStartY, dateStart.Year)
+          String.Format(paramStartM, dateStart.Month - 1)
+          String.Format(paramStartD, dateStart.Day)
+          String.Format(paramFinalY, dateFinal.Year)
+          String.Format(paramFinalM, dateFinal.Month - 1)
+          String.Format(paramFinalD, dateFinal.Day)
           String.Format(paramBypass) ]
 
     parameters
@@ -112,6 +115,16 @@ type Client() =
         Log.Debug("Navigating to next page.")
         let elementNext = client.FindElement(xpathNext)
         let url = elementNext.Href |> appendBypassFlag
+        client.Navigate(url)
+
+        Log.Debug("Waiting for page load.")
+        client.WaitForPageLoad()
+
+    member private this.NavigateToPrevPage() =
+
+        Log.Debug("Navigating to prev page.")
+        let elementPrev = client.FindElement(xpathPrev)
+        let url = elementPrev.Href |> appendBypassFlag
         client.Navigate(url)
 
         Log.Debug("Waiting for page load.")

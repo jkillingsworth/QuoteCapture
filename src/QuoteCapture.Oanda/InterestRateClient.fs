@@ -3,6 +3,7 @@
 open System
 open QuoteCapture
 open QuoteCapture.Logging
+open QuoteCapture.Browser
 open QuoteCapture.Oanda.Types
 
 //-------------------------------------------------------------------------------------------------
@@ -13,8 +14,9 @@ let private xpathCurrency = "//*[@name='currency']/option"
 let private xpathDateMin  = "//*[@name='startdate']"
 let private xpathDateMax  = "//*[@name='enddate']"
 let private xpathSubmit   = "//*[@name='submit']"
-let private dateMin       = DateTime(2001, 01, 01)
-let private dateMax       = DateTime.Now.AddYears(+1)
+
+let private dateMin = DateTime(2001, 01, 01)
+let private dateMax = DateTime.Now.AddYears(+1)
 
 //-------------------------------------------------------------------------------------------------
 
