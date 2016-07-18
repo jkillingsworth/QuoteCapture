@@ -164,8 +164,15 @@ module private InsertQuote =
 
     let execute quote =
         let command = new CommandProvider()
-        command.Execute(Some quote.Pair.PairId, Some quote.Date, Some quote.MedBid, Some quote.MedAsk, quote.MinBid, quote.MinAsk, quote.MaxBid, quote.MaxAsk)
-        |> ignore
+        let argPairId = Some quote.Pair.PairId
+        let argDate   = Some quote.Date
+        let argMedBid = Some quote.MedBid
+        let argMedAsk = Some quote.MedAsk
+        let argMinBid = quote.MinBid
+        let argMinAsk = quote.MinAsk
+        let argMaxBid = quote.MaxBid
+        let argMaxAsk = quote.MaxAsk
+        ignore <| command.Execute(argPairId, argDate, argMedBid, argMedAsk, argMinBid, argMinAsk, argMaxBid, argMaxAsk)
 
 let insertQuote =
     InsertQuote.execute
@@ -177,12 +184,15 @@ module private InsertInterestRate =
     [<Literal>]
     let private sql = @"..\..\sql\Oanda\InsertInterestRate.sql"
 
-    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile, AllParametersOptional = false>
 
     let execute interestRate =
         let command = new CommandProvider()
-        command.Execute(interestRate.Currency.CurrencyId, interestRate.DateTime, interestRate.Bid, interestRate.Ask)
-        |> ignore
+        let argCurrencyId = interestRate.Currency.CurrencyId
+        let argDateTime   = interestRate.DateTime
+        let argBid        = interestRate.Bid
+        let argAsk        = interestRate.Ask
+        ignore <| command.Execute(argCurrencyId, argDateTime, argBid, argAsk)
 
 let insertInterestRate =
     InsertInterestRate.execute

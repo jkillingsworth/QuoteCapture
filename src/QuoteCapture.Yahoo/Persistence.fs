@@ -107,12 +107,18 @@ module private InsertQuote =
     [<Literal>]
     let private sql = @"..\..\sql\Yahoo\InsertQuote.sql"
 
-    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile, AllParametersOptional = false>
 
     let execute quote =
         let command = new CommandProvider()
-        command.Execute(quote.Issue.IssueId, quote.Date, quote.Open, quote.Hi, quote.Lo, quote.Close, quote.Volume)
-        |> ignore
+        let argIssueId = quote.Issue.IssueId
+        let argDate    = quote.Date
+        let argOpen    = quote.Open
+        let argHi      = quote.Hi
+        let argLo      = quote.Lo
+        let argClose   = quote.Close
+        let argVolume  = quote.Volume
+        ignore <| command.Execute(argIssueId, argDate, argOpen, argHi, argLo, argClose, argVolume)
 
 let insertQuote =
     InsertQuote.execute
@@ -124,12 +130,14 @@ module private InsertDivid =
     [<Literal>]
     let private sql = @"..\..\sql\Yahoo\InsertDivid.sql"
 
-    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile, AllParametersOptional = false>
 
     let execute quote divid =
         let command = new CommandProvider()
-        command.Execute(quote.Issue.IssueId, quote.Date, divid.Amount)
-        |> ignore
+        let argIssueId = quote.Issue.IssueId
+        let argDate    = quote.Date
+        let argAmount  = divid.Amount
+        ignore <| command.Execute(argIssueId, argDate, argAmount)
 
 let insertDivid =
     InsertDivid.execute
@@ -141,12 +149,15 @@ module private InsertSplit =
     [<Literal>]
     let private sql = @"..\..\sql\Yahoo\InsertSplit.sql"
 
-    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile>
+    type CommandProvider = SqlCommandProvider<sql, connectionName, ConfigFile = configFile, AllParametersOptional = false>
 
     let execute quote split =
         let command = new CommandProvider()
-        command.Execute(quote.Issue.IssueId, quote.Date, split.New, split.Old)
-        |> ignore
+        let argIssueId = quote.Issue.IssueId
+        let argDate    = quote.Date
+        let argNew     = split.New
+        let argOld     = split.Old
+        ignore <| command.Execute(argIssueId, argDate, argNew, argOld)
 
 let insertSplit =
     InsertSplit.execute
