@@ -67,6 +67,7 @@
     <Content Include="packages.config" />
     <Compile Include="Types.fs" />
     <Compile Include="Persistence.fs" />
+    <Compile Include="Date.fs" />
     <Compile Include="QuoteParser.fs" />
     <Compile Include="QuoteClient.fs" />
     <Compile Include="InterestRateParser.fs" />
