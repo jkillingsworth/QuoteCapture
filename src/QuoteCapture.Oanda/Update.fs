@@ -6,7 +6,7 @@ open QuoteCapture.Oanda.Types
 
 //-------------------------------------------------------------------------------------------------
 
-let private update (date : DateTime) (pairs : Pair[]) =
+let private updateQuotes (date : DateTime) (pairs : Pair[]) =
 
     let dateFinal =
         let dateMaximum = Date.getMaximumDate ()
@@ -33,15 +33,15 @@ let private update (date : DateTime) (pairs : Pair[]) =
 
 //-------------------------------------------------------------------------------------------------
 
-let updateOne (date : DateTime) (pair : Pair) =
+let updateQuotesOne (date : DateTime) (pair : Pair) =
 
     let pairs = [| pair |]
-    update date pairs
+    updateQuotes date pairs
 
-let updateAll (date : DateTime) =
+let updateQuotesAll (date : DateTime) =
 
     let pairs = Persistence.selectPairsActive ()
-    update date pairs
+    updateQuotes date pairs
 
 let updateInterestRates () =
 

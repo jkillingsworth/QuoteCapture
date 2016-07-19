@@ -15,21 +15,21 @@ let main = function
         let currencyNameBase = currencyNames.[0]
         let currencyNameQuot = currencyNames.[1]
         let pair = Persistence.selectPairByCurrencyNames currencyNameBase currencyNameQuot
-        Update.updateOne date pair
+        Update.updateQuotesOne date pair
         Update.updateInterestRates ()
         0
 
     | [| "update"; date |]
         ->
         let date = DateTime.ParseExact(date, "d", null)
-        Update.updateAll date
+        Update.updateQuotesAll date
         Update.updateInterestRates ()
         0
 
     | [| "update" |]
         ->
         let date = Date.getMaximumDate ()
-        Update.updateAll date
+        Update.updateQuotesAll date
         Update.updateInterestRates ()
         0
 

@@ -12,19 +12,19 @@ let main = function
         ->
         let date = DateTime.ParseExact(date, "d", null)
         let issue = Persistence.selectIssueByTicker ticker
-        Update.updateOne date issue
+        Update.updateQuotesOne date issue
         0
 
     | [| "update"; date |]
         ->
         let date = DateTime.ParseExact(date, "d", null)
-        Update.updateAll date
+        Update.updateQuotesAll date
         0
 
     | [| "update" |]
         ->
         let date = Date.getMaximumDate ()
-        Update.updateAll date
+        Update.updateQuotesAll date
         0
 
     | [| "issueId"; input |]

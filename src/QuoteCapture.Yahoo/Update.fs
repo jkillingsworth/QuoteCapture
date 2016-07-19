@@ -12,7 +12,7 @@ let private insert (quote : Quote) =
     quote.Divid |> Option.iter (Persistence.insertDivid quote)
     quote.Split |> Option.iter (Persistence.insertSplit quote)
 
-let private update (date : DateTime) (issues : Issue[]) =
+let private updateQuotes (date : DateTime) (issues : Issue[]) =
 
     let dateFinal =
         let dateMaximum = Date.getMaximumDate ()
@@ -39,12 +39,12 @@ let private update (date : DateTime) (issues : Issue[]) =
 
 //-------------------------------------------------------------------------------------------------
 
-let updateOne (date : DateTime) (issue : Issue) =
+let updateQuotesOne (date : DateTime) (issue : Issue) =
 
     let issues = [| issue |]
-    update date issues
+    updateQuotes date issues
 
-let updateAll (date : DateTime) =
+let updateQuotesAll (date : DateTime) =
 
     let issues = Persistence.selectIssuesActive ()
-    update date issues
+    updateQuotes date issues
