@@ -27,7 +27,7 @@ let private paramFinalD = "e={0:D1}"
 let private constructUrl issue (dateStart : DateTime) (dateFinal : DateTime) =
 
     let parameters =
-        [ String.Format(paramTicker, issue.Ticker)
+        [ String.Format(paramTicker, issue.Ticker |> Ticker.toYahoo)
           String.Format(paramStartY, dateStart.Year)
           String.Format(paramStartM, dateStart.Month - 1)
           String.Format(paramStartD, dateStart.Day)
@@ -103,7 +103,6 @@ type Client() =
     member private this.NavigateToHistoricalQuotes(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
 
         Log.Debug("Navigating to historical quotes: {0}", issue)
-        let ticker = issue.Ticker |> Ticker.toYahoo
         let url = constructUrl issue dateStart dateFinal
         client.Navigate(url)
 
