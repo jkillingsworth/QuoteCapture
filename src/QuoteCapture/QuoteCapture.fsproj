@@ -20,9 +20,9 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <Tailcalls>false</Tailcalls>
-    <BaseOutputPath>..\..\build\QuoteCapture\bin</BaseOutputPath>
+    <BaseOutputPath>..\..\build\$(MSBuildProjectName)\bin</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)\$(Platform)\$(Configuration)\</OutputPath>
-    <BaseIntermediateOutputPath>..\..\build\QuoteCapture\obj</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\build\$(MSBuildProjectName)\obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Platform)\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
@@ -33,9 +33,9 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <Tailcalls>true</Tailcalls>
-    <BaseOutputPath>..\..\build\QuoteCapture\bin</BaseOutputPath>
+    <BaseOutputPath>..\..\build\$(MSBuildProjectName)\bin</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)\$(Platform)\$(Configuration)\</OutputPath>
-    <BaseIntermediateOutputPath>..\..\build\QuoteCapture\obj</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\build\$(MSBuildProjectName)\obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Platform)\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
