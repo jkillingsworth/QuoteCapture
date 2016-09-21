@@ -1,12 +1,12 @@
 ﻿module Program
 
 open System
+open QuoteCapture.Logging
 open QuoteCapture.Oanda
 
 //-------------------------------------------------------------------------------------------------
 
-[<EntryPoint>]
-let main = function
+let private execute = function
 
     | [| "update"; date; pair |]
         ->
@@ -17,23 +17,27 @@ let main = function
         let pair = Persistence.selectPairByCurrencyNames currencyNameBase currencyNameQuot
         Update.updateQuotesOne date pair
         Update.updateInterestRates ()
-        0
 
     | [| "update"; date |]
         ->
         let date = DateTime.ParseExact(date, "d", null)
         Update.updateQuotesAll date
         Update.updateInterestRates ()
-        0
 
     | [| "update" |]
         ->
         let date = Date.getMaximumDate ()
         Update.updateQuotesAll date
         Update.updateInterestRates ()
-        0
 
     | argv
         ->
         failwith "Invalid parameters."
-        1
+
+[<EntryPoint>]
+let main argv =
+    try
+        execute argv
+    with ex ->
+        Log.Fatal(ex)
+    0
