@@ -102,7 +102,7 @@ type Client() =
 
     member private this.NavigateToHistoricalQuotes(issue : Issue, dateStart : DateTime, dateFinal : DateTime) =
 
-        Log.Debug("Navigating to historical quotes: {0}", issue)
+        Log.Debug("Navigating to historical quotes: {0}", format issue)
         let url = constructUrl issue dateStart dateFinal
         client.Navigate(url)
 

@@ -87,7 +87,7 @@ let parseInterestRates input =
 
     let filterInterestRate interestRate =
         if (interestRate.Bid = 0m && interestRate.Ask = 0m) then
-            Log.Debug("Skipping interest rate: {0}", interestRate)
+            Log.Debug("Skipping interest rate: {0}", format interestRate)
             false
         else
             true

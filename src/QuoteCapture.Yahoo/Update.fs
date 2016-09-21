@@ -29,12 +29,12 @@ let private updateQuotes (date : DateTime) (issues : Issue[]) =
     for issue in issues do
         let dateStart = issue |> Persistence.selectQuoteLatestDate |> Date.getNextDate
         if (dateStart > dateFinal) then
-            Log.Warn("Cannot update beyond target date: {0}", issue)
+            Log.Warn("Cannot update beyond target date: {0}", format issue)
         else
-            Log.Debug("Getting quotes for: {0}", issue)
+            Log.Debug("Getting quotes for: {0}", format issue)
             for quote in client.GetData(issue, dateStart, dateFinal) do
                 Persistence.transaction (lazy insert quote)
-                Log.Info("Got quote: {0}", quote)
+                Log.Info("Got quote: {0}", format quote)
 
     Log.Debug("Finished updating quotes.")
 

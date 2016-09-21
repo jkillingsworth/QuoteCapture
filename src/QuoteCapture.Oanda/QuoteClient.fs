@@ -34,14 +34,14 @@ type Client() =
 
     member this.GetData(pair : Pair, dateStart : DateTime, dateFinal : DateTime) =
 
-        Log.Debug("Setting the base currency: {0}.", pair.Base)
+        Log.Debug("Setting the base currency: {0}.", format pair.Base)
         this.FindElement(xpathCodeField, prefixBase).Click()
         let elementValueBase = this.FindElement(xpathCodeValue, prefixBase, pair.Base.Name)
         let elementTrackBase = this.FindElement(xpathTrackBase)
         this.ScrollUntilDisplayed(elementTrackBase, elementValueBase)
         elementValueBase.Click()
 
-        Log.Debug("Setting the quot currency: {0}.", pair.Quot)
+        Log.Debug("Setting the quot currency: {0}.", format pair.Quot)
         this.FindElement(xpathCodeField, prefixQuot).Click()
         let elementValueQuot = this.FindElement(xpathCodeValue, prefixQuot, pair.Quot.Name)
         let elementTrackQuot = this.FindElement(xpathTrackQuot)

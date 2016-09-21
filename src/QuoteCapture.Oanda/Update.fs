@@ -23,12 +23,12 @@ let private updateQuotes (date : DateTime) (pairs : Pair[]) =
     for pair in pairs do
         let dateStart = pair |> Persistence.selectQuoteLatestDate |> Date.getNextDate
         if (dateStart > dateFinal) then
-            Log.Warn("Cannot update beyond target date: {0}", pair)
+            Log.Warn("Cannot update beyond target date: {0}", format pair)
         else
-            Log.Debug("Getting quotes for: {0}", pair)
+            Log.Debug("Getting quotes for: {0}", format pair)
             for quote in client.GetData(pair, dateStart, dateFinal) do
                 Persistence.insertQuote quote
-                Log.Info("Got quote: {0}", quote)
+                Log.Info("Got quote: {0}", format quote)
 
     Log.Debug("Finished updating quotes.")
 
@@ -56,6 +56,6 @@ let updateInterestRates () =
 
     for interestRate in interestRates do
         Persistence.insertInterestRate interestRate
-        Log.Info("Got interest rate: {0}", interestRate)
+        Log.Info("Got interest rate: {0}", format interestRate)
 
     Log.Debug("Finished updating interest rates.")

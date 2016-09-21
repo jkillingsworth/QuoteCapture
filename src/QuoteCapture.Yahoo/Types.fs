@@ -25,3 +25,12 @@ type Quote =
       Volume  : int64
       Divid   : Divid option
       Split   : Split option }
+
+//-------------------------------------------------------------------------------------------------
+
+let rec format (record : obj) =
+    match record with
+    | :? DateTime as date -> date.ToShortDateString()
+    | :? Issue as issue -> issue.Ticker
+    | :? Quote as quote -> format quote.Date + ", " + format quote.Issue
+    | _ -> record.ToString()

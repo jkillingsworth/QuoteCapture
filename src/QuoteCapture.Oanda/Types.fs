@@ -28,3 +28,14 @@ type InterestRate =
       DateTime   : DateTime
       Bid        : decimal
       Ask        : decimal }
+
+//-------------------------------------------------------------------------------------------------
+
+let rec format (record : obj) =
+    match record with
+    | :? DateTime as date -> date.ToShortDateString()
+    | :? Currency as currency -> currency.Name
+    | :? Pair as pair -> format pair.Base + "/" + format pair.Quot
+    | :? Quote as quote -> format quote.Date + ", " + format quote.Pair
+    | :? InterestRate as interestRate -> format interestRate.DateTime
+    | _ -> record.ToString()

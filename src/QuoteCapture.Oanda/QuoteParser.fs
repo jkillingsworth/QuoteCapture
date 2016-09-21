@@ -140,5 +140,5 @@ let parseQuote pair date input =
           MaxBid = maxBid
           MaxAsk = maxAsk }
 
-    Log.Debug("Parsed quote: {0}", quote)
+    Log.Debug("Parsed quote: {0}", format quote)
     quote
