@@ -34,6 +34,7 @@ let private updateQuotes (date : DateTime) (issues : Issue[]) =
             Log.Debug("Getting quotes for: {0}", issue)
             for quote in client.GetData(issue, dateStart, dateFinal) do
                 Persistence.transaction (lazy insert quote)
+                Log.Info("Got quote: {0}", quote)
 
     Log.Debug("Finished updating quotes.")
 

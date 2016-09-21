@@ -28,6 +28,7 @@ let private updateQuotes (date : DateTime) (pairs : Pair[]) =
             Log.Debug("Getting quotes for: {0}", pair)
             for quote in client.GetData(pair, dateStart, dateFinal) do
                 Persistence.insertQuote quote
+                Log.Info("Got quote: {0}", quote)
 
     Log.Debug("Finished updating quotes.")
 
